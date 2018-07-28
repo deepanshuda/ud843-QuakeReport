@@ -21,10 +21,17 @@ public class QuakeAdapter extends RecyclerView.Adapter<QuakeAdapter.QuakeViewHol
     private Context context;
     private int mLayout;
 
-    public QuakeAdapter(List<Quake> quakes, Context context, int mLayout) {
+    final private ListItemClickListener listItemClickListener;
+
+    public interface ListItemClickListener {
+        void onListItemClick(int clickedItemIndex);
+    }
+
+    public QuakeAdapter(List<Quake> quakes, Context context, int mLayout, ListItemClickListener listItemClickListener) {
         this.quakes = quakes;
         this.context = context;
         this.mLayout = mLayout;
+        this.listItemClickListener = listItemClickListener;
     }
 
     @NonNull
@@ -82,7 +89,7 @@ public class QuakeAdapter extends RecyclerView.Adapter<QuakeAdapter.QuakeViewHol
         return quakes.size();
     }
 
-    public class QuakeViewHolder extends RecyclerView.ViewHolder {
+    public class QuakeViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener{
 
         private TextView quakeMagnitude;
         private TextView quakePlace;
@@ -98,6 +105,13 @@ public class QuakeAdapter extends RecyclerView.Adapter<QuakeAdapter.QuakeViewHol
             quakePlace = (TextView) itemView.findViewById(R.id.quake_location);
             quakeDate = (TextView) itemView.findViewById(R.id.quake_date);
             quakeTime = (TextView) itemView.findViewById(R.id.quake_time);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            listItemClickListener.onListItemClick(getAdapterPosition());
         }
     }
 

@@ -15,6 +15,8 @@
  */
 package com.example.android.quakereport;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,12 +26,14 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class EarthquakeActivity extends AppCompatActivity {
+public class EarthquakeActivity extends AppCompatActivity implements QuakeAdapter.ListItemClickListener{
 
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
 
     RecyclerView quakeRecyclerView;
     QuakeAdapter quakeAdapter;
+
+    ArrayList<Quake> earthquakes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +53,21 @@ public class EarthquakeActivity extends AppCompatActivity {
 //        earthquakes.add(new Quake(6.1, "Moscow", "July 20, 2015"));
 //        earthquakes.add(new Quake(6.1, "Rio de Janeiro", "July 20, 2015"));
 //        earthquakes.add(new Quake(1.6, "Paris", "Oct 30, 2011"));
-        ArrayList<Quake> earthquakes = QueryUtils.extractEarthquakes();
+        earthquakes = QueryUtils.extractEarthquakes();
 
-        quakeAdapter = new QuakeAdapter(earthquakes, this, R.layout.quake_list_item);
+        quakeAdapter = new QuakeAdapter(earthquakes, this, R.layout.quake_list_item, this);
         quakeRecyclerView.setAdapter(quakeAdapter);
 
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
+    }
+
+    @Override
+    public void onListItemClick(int clickedItemIndex) {
+        Quake selectedQuake = earthquakes.get(clickedItemIndex);
+
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW);
+        browserIntent.setData(Uri.parse(selectedQuake.getUrl()));
+        startActivity(browserIntent);
     }
 }

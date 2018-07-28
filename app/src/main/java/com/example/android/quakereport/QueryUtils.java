@@ -62,7 +62,7 @@ public final class QueryUtils {
                 long milliseconds = quakeProperties.getLong("time");
 
 
-                Quake newQuake = new Quake(quakeProperties.getDouble("mag"), quakeProperties.getString("place"), milliseconds);
+                Quake newQuake = new Quake(quakeProperties.getDouble("mag"), quakeProperties.getString("place"), milliseconds, quakeProperties.getString("url"));
                 earthquakes.add(newQuake);
             }
 
