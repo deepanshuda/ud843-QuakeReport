@@ -34,6 +34,10 @@ public class QuakeAdapter extends RecyclerView.Adapter<QuakeAdapter.QuakeViewHol
         this.listItemClickListener = listItemClickListener;
     }
 
+    public void setQuakes(List<Quake> quakes) {
+        this.quakes = quakes;
+    }
+
     @NonNull
     @Override
     public QuakeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
